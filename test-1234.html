@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PolyForge Marketplace – Buy and sell high-quality 3D models, textures, and game assets. Rigged characters, environments, props, and more.">
+
+  <title>PolyForge – 3D Asset Marketplace</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0c0c12; color: #e2e0f0; }
+    .sr-only { font-size: 1px; line-height: 1px; color: transparent; user-select: none; }
+
+    /* NAV */
+    nav {
+      background: #13131e; border-bottom: 1px solid #1f1f30;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 64px;
+    }
+    .logo { font-size: 22px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; }
+    .logo-mark { background: linear-gradient(135deg, #8b5cf6, #ec4899); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .nav-center { display: flex; align-items: center; gap: 0; background: #0c0c12; border: 1px solid #1f1f30; border-radius: 8px; overflow: hidden; }
+    .nav-center input { background: transparent; border: none; padding: 10px 16px; color: #e2e0f0; font-size: 14px; outline: none; width: 320px; }
+    .nav-center button { background: #8b5cf6; border: none; padding: 10px 16px; color: #fff; cursor: pointer; font-size: 14px; }
+    .nav-right { display: flex; gap: 14px; align-items: center; }
+    .nav-link { color: #94a3b8; font-size: 14px; text-decoration: none; }
+    .btn-upload { background: #8b5cf6; color: #fff; padding: 9px 20px; border-radius: 7px; font-weight: 600; font-size: 14px; text-decoration: none; }
+
+    /* HERO BANNER */
+    .hero-banner {
+      background: linear-gradient(135deg, #1a0a2e 0%, #0c0c12 60%);
+      padding: 64px 48px; text-align: center; border-bottom: 1px solid #1f1f30;
+      position: relative; overflow: hidden;
+    }
+    .hero-banner::before {
+      content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%);
+    }
+    .hero-badge { display: inline-block; background: rgba(139,92,246,0.2); border: 1px solid rgba(139,92,246,0.4); color: #c4b5fd; font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; }
+    .hero-banner h1 { font-size: 52px; font-weight: 900; letter-spacing: -2px; margin-bottom: 16px; }
+    .hero-banner h1 span { background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-banner p { font-size: 18px; color: #94a3b8; max-width: 520px; margin: 0 auto 32px; }
+    .hero-cats { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .hero-cat { background: #1f1f30; border: 1px solid #2d2d42; color: #c4b5fd; padding: 7px 16px; border-radius: 20px; font-size: 13px; text-decoration: none; transition: all 0.2s; }
+    .hero-cat:hover { border-color: #8b5cf6; background: rgba(139,92,246,0.15); }
+
+    /* STATS BAR */
+    .stats-bar { display: flex; justify-content: center; gap: 60px; padding: 28px 48px; background: #13131e; border-bottom: 1px solid #1f1f30; }
+    .stat { text-align: center; }
+    .stat-n { font-size: 28px; font-weight: 800; color: #8b5cf6; }
+    .stat-l { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+    /* FEATURED */
+    .featured-section { max-width: 1200px; margin: 0 auto; padding: 56px 48px; }
+    .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 28px; }
+    .section-title { font-size: 22px; font-weight: 800; }
+    .section-link { color: #8b5cf6; font-size: 14px; text-decoration: none; }
+    .assets-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .asset-card { background: #13131e; border: 1px solid #1f1f30; border-radius: 12px; overflow: hidden; transition: all 0.2s; cursor: pointer; }
+    .asset-card:hover { border-color: #8b5cf6; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(139,92,246,0.2); }
+    .asset-thumb { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 64px; }
+    .thumb-purple { background: linear-gradient(135deg, #1a0a2e, #2d1b4e); }
+    .thumb-blue { background: linear-gradient(135deg, #0a1628, #1a2d4e); }
+    .thumb-green { background: linear-gradient(135deg, #0a1f12, #1a3d22); }
+    .thumb-orange { background: linear-gradient(135deg, #1f120a, #3d2a1a); }
+    .asset-info { padding: 16px; }
+    .asset-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .asset-author { font-size: 12px; color: #64748b; margin-bottom: 10px; }
+    .asset-footer { display: flex; justify-content: space-between; align-items: center; }
+    .asset-price { font-size: 16px; font-weight: 800; color: #a78bfa; }
+    .asset-tag { font-size: 11px; background: #1f1f30; color: #94a3b8; padding: 3px 8px; border-radius: 4px; }
+    .asset-free { color: #34d399; }
+
+    /* CATEGORIES */
+    .categories-section { background: #13131e; border-top: 1px solid #1f1f30; border-bottom: 1px solid #1f1f30; padding: 56px 48px; }
+    .categories-inner { max-width: 1200px; margin: 0 auto; }
+    .cat-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-top: 28px; }
+    .cat-card { background: #0c0c12; border: 1px solid #1f1f30; border-radius: 12px; padding: 24px 16px; text-align: center; text-decoration: none; color: inherit; transition: all 0.2s; }
+    .cat-card:hover { border-color: #8b5cf6; }
+    .cat-icon { font-size: 32px; margin-bottom: 10px; }
+    .cat-name { font-size: 13px; font-weight: 600; }
+    .cat-count { font-size: 11px; color: #64748b; margin-top: 4px; }
+
+    /* TRENDING */
+    .trending-section { max-width: 1200px; margin: 0 auto; padding: 56px 48px; }
+
+    /* FOOTER */
+    footer { background: #080810; border-top: 1px solid #1f1f30; padding: 56px 48px 28px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .f-logo { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .f-desc { font-size: 13px; color: #475569; line-height: 1.7; }
+    .footer-col h4 { font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { color: #475569; font-size: 13px; text-decoration: none; }
+    .footer-col a:hover { color: #e2e0f0; }
+    .footer-bottom { border-top: 1px solid #1f1f30; padding-top: 24px; display: flex; justify-content: space-between; font-size: 12px; color: #334155; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="logo">
+    <div class="logo-mark">⬡</div>
+    PolyForge
+  </div>
+  <div class="nav-center">
+    <input type="text" placeholder="Search 3D models, textures, rigs...">
+    <button>🔍</button>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="nav-link">Sell</a>
+    <a href="#" class="nav-link">Pricing</a>
+    <a href="#" class="btn-upload">Upload Asset</a>
+  </div>
+</nav>
+
+<section class="hero-banner">
+  <div class="hero-badge">250,000+ assets from 18,000 creators</div>
+  <h1>The <span>3D Asset</span><br>Marketplace</h1>
+  <p>Professional-grade models, rigs, materials, and VFX ready for games, film, AR/VR, and real-time rendering.</p>
+  <div class="hero-cats">
+    <a href="#" class="hero-cat">Characters</a>
+    <a href="#" class="hero-cat">Environments</a>
+    <a href="#" class="hero-cat">Vehicles</a>
+    <a href="#" class="hero-cat">Architecture</a>
+    <a href="#" class="hero-cat">Props</a>
+    <a href="#" class="hero-cat">Weapons</a>
+    <a href="#" class="hero-cat">Nature</a>
+    <a href="#" class="hero-cat">Sci-Fi</a>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-n">250K+</div><div class="stat-l">Assets Listed</div></div>
+  <div class="stat"><div class="stat-n">18K+</div><div class="stat-l">Creator Accounts</div></div>
+  <div class="stat"><div class="stat-n">4.8★</div><div class="stat-l">Average Rating</div></div>
+  <div class="stat"><div class="stat-n">120+</div><div class="stat-l">File Formats</div></div>
+</div>
+
+<section class="featured-section">
+  <div class="section-header">
+    <div class="section-title">Featured This Week</div>
+    <a href="#" class="section-link">View all featured →</a>
+  </div>
+  <div class="assets-grid">
+    <div class="asset-card">
+      <div class="asset-thumb thumb-purple">🧙</div>
+      <div class="asset-info">
+        <div class="asset-name">Fantasy Mage — Full Rig</div>
+        <div class="asset-author">by ArcaneMeshworks</div>
+        <div class="asset-footer"><span class="asset-price">$48.00</span><span class="asset-tag">FBX · GLTF</span></div>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-thumb thumb-blue">🚀</div>
+      <div class="asset-info">
+        <div class="asset-name">Sci-Fi Cruiser Mk.III</div>
+        <div class="asset-author">by NovaDrift Studios</div>
+        <div class="asset-footer"><span class="asset-price">$72.00</span><span class="asset-tag">OBJ · FBX</span></div>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-thumb thumb-green">🌲</div>
+      <div class="asset-info">
+        <div class="asset-name">Temperate Forest Pack</div>
+        <div class="asset-author">by Verdant3D</div>
+        <div class="asset-footer"><span class="asset-price">$29.00</span><span class="asset-tag">GLTF · USD</span></div>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-thumb thumb-orange">🏚️</div>
+      <div class="asset-info">
+        <div class="asset-name">Abandoned Cabin Interior</div>
+        <div class="asset-author">by PolyPast</div>
+        <div class="asset-footer"><span class="asset-price asset-free">FREE</span><span class="asset-tag">Blender</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="categories-section">
+  <div class="categories-inner">
+    <div class="section-title">Browse by Category</div>
+    <div class="cat-grid">
+      <a href="#" class="cat-card"><div class="cat-icon">🧑</div><div class="cat-name">Characters</div><div class="cat-count">42,100 assets</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">🌄</div><div class="cat-name">Environments</div><div class="cat-count">38,400 assets</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">🚗</div><div class="cat-name">Vehicles</div><div class="cat-count">19,200 assets</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">🏗️</div><div class="cat-name">Architecture</div><div class="cat-count">31,800 assets</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">💡</div><div class="cat-name">Materials</div><div class="cat-count">24,700 assets</div></a>
+      <a href="#" class="cat-card"><div class="cat-icon">✨</div><div class="cat-name">VFX</div><div class="cat-count">11,500 assets</div></a>
+    </div>
+  </div>
+</section>
+
+<section class="trending-section">
+  <div class="section-header">
+    <div class="section-title">Trending Now</div>
+    <a href="#" class="section-link">View all trending →</a>
+  </div>
+  <div class="assets-grid">
+    <div class="asset-card">
+      <div class="asset-thumb thumb-blue">🤖</div>
+      <div class="asset-info">
+        <div class="asset-name">Combat Android — Rigged</div>
+        <div class="asset-author">by SteelFrame</div>
+        <div class="asset-footer"><span class="asset-price">$89.00</span><span class="asset-tag">FBX · BLD</span></div>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-thumb thumb-purple">🏰</div>
+      <div class="asset-info">
+        <div class="asset-name">Medieval Castle Modular Kit</div>
+        <div class="asset-author">by StonecutterVFX</div>
+        <div class="asset-footer"><span class="asset-price">$55.00</span><span class="asset-tag">USD · GLTF</span></div>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-thumb thumb-orange">🔫</div>
+      <div class="asset-info">
+        <div class="asset-name">Tactical Weapon Pack Vol. 4</div>
+        <div class="asset-author">by Ironveil</div>
+        <div class="asset-footer"><span class="asset-price">$42.00</span><span class="asset-tag">FBX</span></div>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-thumb thumb-green">🌊</div>
+      <div class="asset-info">
+        <div class="asset-name">Ocean Shader Pack — HDRP</div>
+        <div class="asset-author">by AquaDrift</div>
+        <div class="asset-footer"><span class="asset-price">$18.00</span><span class="asset-tag">Unity · Unreal</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="f-logo">⬡ PolyForge</div>
+        <div class="f-desc">PolyForge is an independent 3D asset marketplace connecting creators and studios worldwide. We take a 20% platform fee and pay creators monthly via Stripe or PayPal.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Marketplace</h4>
+        <ul>
+          <li><a href="#">Browse Assets</a></li>
+          <li><a href="#">Free Assets</a></li>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Collections</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Creators</h4>
+        <ul>
+          <li><a href="#">Sell on PolyForge</a></li>
+          <li><a href="#">Creator Dashboard</a></li>
+          <li><a href="#">Pricing Guide</a></li>
+          <li><a href="#">Creator Handbook</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Centre</a></li>
+          <li><a href="#">Licensing FAQ</a></li>
+          <li><a href="#">Refund Policy</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 PolyForge Technologies Ltd. All rights reserved.</span>
+      <span>Amsterdam · All prices in USD</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
